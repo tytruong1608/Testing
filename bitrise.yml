@@ -51,6 +51,8 @@ workflows:
     - git-clone@4: {}
     - script@1:
         title: Do anything with Script step
+        is_always_run: true
+    - certificate-and-profile-installer@1: {}
     - flutter-installer@0:
         inputs:
         - is_update: "false"
@@ -58,8 +60,18 @@ workflows:
     - flutter-analyze@0:
         inputs:
         - project_location: $BITRISE_FLUTTER_PROJECT_LOCATION
-    - flutter-test@0:
+    - flutter:
+        inputs:
+        - commands: test
+    - flutter-build@0:
         inputs:
         - project_location: $BITRISE_FLUTTER_PROJECT_LOCATION
+        - platform: both
+    - xcode-archive@3:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+        - scheme: $BITRISE_SCHEME
+        - export_method: $BITRISE_EXPORT_METHOD
+        - configuration: Release
     - deploy-to-bitrise-io@1: {}
     - cache-push@2: {}
